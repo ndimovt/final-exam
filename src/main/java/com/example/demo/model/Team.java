@@ -2,30 +2,39 @@ package com.example.demo.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Team {
     @Id
+    @NotNull
     private Long id;
-    private String name;
+    @NotNull
+    @Pattern(regexp = "^\\b\\w+\\b\\s\\b\\w+\\b\\s\\b\\w+\\b$")
+    private String teamName;
+    @NotNull
+    @Pattern(regexp = "^([^\\W\\d_]+-?){1,7}$", message = "Name can't contain special symbols or numbers!")
     private String managerName;
+    @NotNull
     private char group;
 
     public Team() {
     }
 
-    public Team(String name, String managerName, char group) {
-        this.name = name;
+    public Team(Long id, String teamName, String managerName, char group) {
+        this.id = id;
+        this.teamName = teamName;
         this.managerName = managerName;
         this.group = group;
     }
 
     public String getName() {
-        return name;
+        return teamName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.teamName = name;
     }
 
     public String getManagerName() {

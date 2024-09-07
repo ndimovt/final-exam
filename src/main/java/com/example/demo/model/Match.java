@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -12,43 +13,48 @@ import java.util.Date;
 public class Match {
     @Id
     private Long id;
-    @OneToOne
     @NotNull
-    private Team aTeamId;
-    @OneToOne
+    private Long teamAId;
     @NotNull
-    private Team bTeamId;
-    @DateTimeFormat
+    private Long teamBId;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
     @NotNull
-    @Pattern(regexp = "^(0\\([0-9]\\)-0\\([0-9]\\)|[0-9]-[0-9])$")
     private String score;
 
     public Match() {
     }
 
-    public Match(Long id, Team aTeamId, Team bTeamId, Date date, String score) {
+    public Match(Long id, Long teamAId, Long teamBId, Date date, String score) {
         this.id = id;
-        this.aTeamId = aTeamId;
-        this.bTeamId = bTeamId;
+        this.teamAId = teamAId;
+        this.teamBId = teamBId;
         this.date = date;
         this.score = score;
     }
 
-    public Team getaTeamId() {
-        return aTeamId;
+    public Long getId() {
+        return id;
     }
 
-    public void setaTeamId(Team aTeamId) {
-        this.aTeamId = aTeamId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Team getbTeamId() {
-        return bTeamId;
+    public Long getTeamAId() {
+        return teamAId;
     }
 
-    public void setbTeamId(Team bTeamId) {
-        this.bTeamId = bTeamId;
+    public void setTeamAId(Long teamAId) {
+        this.teamAId = teamAId;
+    }
+
+    public Long getTeamBId() {
+        return teamBId;
+    }
+
+    public void setTeamBId(Long teamBId) {
+        this.teamBId = teamBId;
     }
 
     public Date getDate() {

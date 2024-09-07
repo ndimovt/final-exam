@@ -8,16 +8,15 @@ import jakarta.validation.constraints.Pattern;
 @Entity
 public class Team {
     @Id
-    @NotNull
     private Long id;
     @NotNull
-    @Pattern(regexp = "^\\b\\w+\\b\\s\\b\\w+\\b\\s\\b\\w+\\b$")
+    @Pattern(regexp = "^[a-zA-Z ]+$", message = "teamNames can't contain special symbols or numbers!")
     private String teamName;
     @NotNull
-    @Pattern(regexp = "^([^\\W\\d_]+-?){1,7}$", message = "Name can't contain special symbols or numbers!")
+    @Pattern(regexp = "^[\\p{L} ]+$", message = "Names can't contain special symbols or numbers!")
     private String managerName;
     @NotNull
-    private char group;
+    private char teamGroup;
 
     public Team() {
     }
@@ -26,7 +25,19 @@ public class Team {
         this.id = id;
         this.teamName = teamName;
         this.managerName = managerName;
-        this.group = group;
+        this.teamGroup = group;
+    }
+
+    public Team(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -46,10 +57,10 @@ public class Team {
     }
 
     public char getGroup() {
-        return group;
+        return teamGroup;
     }
 
     public void setGroup(char group) {
-        this.group = group;
+        this.teamGroup = group;
     }
 }

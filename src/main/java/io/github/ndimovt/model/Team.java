@@ -1,19 +1,17 @@
 package io.github.ndimovt.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Team {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
-    @Pattern(regexp = "^[a-zA-Z ]+$", message = "teamNames can't contain special symbols or numbers!")
     private String teamName;
     private String managerName;
-    @NotNull
     private char teamGroup;
 
     public Team() {

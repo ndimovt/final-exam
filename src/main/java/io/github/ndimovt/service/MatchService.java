@@ -20,8 +20,7 @@ public class MatchService {
     @Autowired
     private MatchRepository matchRepository;
 
-    public List<Match> readMatchesFile(MultipartFile file) throws InvalidFileTypeException, InvalidFileFormatException {
-        int count = 0;
+    public List<Match> readMatchesFile(MultipartFile file) throws InvalidFileTypeException, InvalidFileFormatException, ArrayIndexOutOfBoundsException {
         List<Match> matches = new ArrayList<>();
         if (!Validator.isFileFormatValid(file)) {
             throw new InvalidFileTypeException("File type must be csv!");
@@ -43,12 +42,11 @@ public class MatchService {
                         validateId(info[1]),
                         validateId(info[2]),
                         validateDate(info[3]),
-                        info[4]
+                        validateScore(info[4])
                 ));
-                count++;
             }
         } catch (IOException ie) {
-            throw new InvalidFileFormatException("File can't be uploaded to database, because of corrupted data on line " + count);
+            throw new InvalidFileFormatException("File can't be uploaded to database, because of corrupted data!");
         }
 
         return matchRepository.saveAll(matches);

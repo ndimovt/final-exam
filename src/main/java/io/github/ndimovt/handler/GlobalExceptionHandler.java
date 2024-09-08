@@ -44,5 +44,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> invalidId(NumberFormatException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
+    @ExceptionHandler(ArrayIndexOutOfBoundsException.class)
+    public ResponseEntity<String> invalidLength(ArrayIndexOutOfBoundsException e){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+    }
 
 }

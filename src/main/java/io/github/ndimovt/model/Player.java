@@ -1,25 +1,18 @@
 package io.github.ndimovt.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.*;
 
 @Entity
 public class Player {
     @Id
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
-    @Min(1)
-    @Max(99)
     private int teamNumber;
-    @NotNull
-    @Size(min = 2, max = 2)
-    @Pattern(regexp = "^[A-Z]{2}$", message = "Input must have 2 uppercase symbols!")
     private String position;
-
     private String name;
-    @NotNull
     private long teamId;
 
     public Player() {

@@ -21,8 +21,7 @@ public class RecordService {
     @Autowired
     private RecordsRepository recordsRepository;
 
-    public List<Record> insertRecords(MultipartFile file) throws InvalidFileTypeException, InvalidFileFormatException{
-        int count = 0;
+    public List<Record> insertRecords(MultipartFile file) throws InvalidFileTypeException, InvalidFileFormatException, ArrayIndexOutOfBoundsException{
         List<Record> records = new ArrayList<>();
         if (!Validator.isFileFormatValid(file)) {
             throw new InvalidFileTypeException("File type must be csv!");
@@ -40,12 +39,12 @@ public class RecordService {
                         validateId(info[0]),
                         validateId(info[1]),
                         validateId(info[2]),
-                        Integer.parseInt(info[3]),
-                        info[4]));
-                count++;
+                        validatePlayingTime(info[3]),
+                        validateMaxPlayingTime(info[4])
+                ));
             }
         } catch (IOException ie) {
-            throw new InvalidFileFormatException("File can't be uploaded to database, because of corrupted data on line " + count);
+            throw new InvalidFileFormatException("File can't be uploaded to database, because of corrupted data!");
         }
         return recordsRepository.saveAll(records);
     }

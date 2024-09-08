@@ -14,11 +14,8 @@ public class MatchController {
     private MatchService matchService;
     @PostMapping("/match/file/")
     public ResponseEntity<String> insertMatchRecords(@RequestParam("file") MultipartFile file){
-        try {
-            matchService.readMatchesFile(file);
-            return ResponseEntity.ok("File processed successfully!");
-        }catch (Exception e) {
-            return ResponseEntity.status(500).body("Error processing file!");
-        }
+        matchService.readMatchesFile(file);
+        return ResponseEntity.ok("File processed successfully!");
+
     }
 }

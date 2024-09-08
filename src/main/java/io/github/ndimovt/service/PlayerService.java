@@ -22,8 +22,7 @@ public class PlayerService {
     @Autowired
     private PlayerRepository playerRepository;
 
-    public List<Player> insertPlayers(MultipartFile file) throws InvalidFileTypeException, InvalidFileFormatException{
-        int count = 0;
+    public List<Player> insertPlayers(MultipartFile file) throws InvalidFileTypeException, InvalidFileFormatException, ArrayIndexOutOfBoundsException{
         List<Player> players = new ArrayList<>();
         if (!Validator.isFileFormatValid(file)) {
             throw new InvalidFileTypeException("File type must be csv!");
@@ -38,16 +37,15 @@ public class PlayerService {
                 }
                 String[] records = line.split(",");
                 players.add(new Player(
-                        Long.parseLong(records[0]),
-                        Integer.parseInt(records[1]),
-                        records[2],
+                        validateId(records[0]),
+                        validateTeamNumber(records[1]),
+                        validatePlayerPosition(records[2]),
                         Validator.validatePlayerName(records[3]),
-                        Long.parseLong(records[4])));
-                count++;
-
+                        validateId(records[4])
+                ));
             }
         } catch (IOException ie) {
-            throw new InvalidFileFormatException("File can't be uploaded to database, because of corrupted data on line " + count);
+            throw new InvalidFileFormatException("File can't be uploaded to database, because of corrupted data!");
         }
         return playerRepository.saveAll(players);
     }

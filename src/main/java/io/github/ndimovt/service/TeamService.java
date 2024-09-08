@@ -19,8 +19,7 @@ public class TeamService {
     @Autowired
     private TeamRepository teamRepository;
 
-    public List<Team> readTeamsFile(MultipartFile file) throws InvalidFileTypeException, InvalidFileFormatException {
-        int count = 0;
+    public List<Team> readTeamsFile(MultipartFile file) throws InvalidFileTypeException, InvalidFileFormatException, ArrayIndexOutOfBoundsException {
         List<Team> teams = new ArrayList<>();
         if (!Validator.isFileFormatValid(file)) {
             throw new InvalidFileTypeException("File type must be csv!");
@@ -36,14 +35,13 @@ public class TeamService {
                 String[] headers = line.split(",");
                 teams.add(new Team(
                         validateId(headers[0]),
-                        headers[1],
+                        validateTeamName(headers[1]),
                         validateManagerName(headers[2]),
-                        headers[3].charAt(0)));
-                count++;
-
+                        validateTeamGroup(headers[3].charAt(0))
+                ));
             }
         } catch (IOException ie) {
-            throw new InvalidFileFormatException("File can't be uploaded to database, because of corrupted data on line " + count);
+            throw new InvalidFileFormatException("File can't be uploaded to database, because of corrupted data!");
         }
         return teamRepository.saveAll(teams);
     }

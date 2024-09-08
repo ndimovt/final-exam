@@ -3,9 +3,8 @@ package com.example.demo.service;
 import com.example.demo.exception.InvalidFileFormatException;
 import com.example.demo.exception.InvalidFileTypeException;
 import com.example.demo.model.Match;
-import com.example.demo.model.Team;
 import com.example.demo.repository.MatchRepository;
-import com.example.demo.repository.TeamRepository;
+import com.example.demo.validator.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,28 +12,32 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import static org.apache.tomcat.util.http.FastHttpDateFormat.parseDate;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.*;
 
 @Service
 public class MatchService {
-    @Autowired
-    private TeamRepository teamRepository;
+    private List<DateTimeFormatter> supportedFormats = Arrays.asList(
+            DateTimeFormatter.ofPattern("M/d/yyyy"),
+            DateTimeFormatter.ofPattern("MM/dd/yyyy"),
+            DateTimeFormatter.ofPattern("MM/dd/yy"),
+            DateTimeFormatter.ofPattern("dd-M-yyyy"),
+            DateTimeFormatter.ofPattern("d-MM-yyyy"),
+            DateTimeFormatter.ofPattern("dd-MM-yyyy"),
+            DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     @Autowired
     private MatchRepository matchRepository;
+
     public List<Match> readMatchesFile() throws InvalidFileTypeException, InvalidFileFormatException {
+        int count = 0;
         File file = new File("matches.csv");
         List<Match> matches = new ArrayList<>();
-
-        // Validate the file type
-        if (!isFileFormatValid(file)) {
+        if (!Validator.isFileFormatValid(file)) {
             throw new InvalidFileTypeException("File type must be csv!");
         }
 
-        // Read the file
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             boolean isFirstLine = true;
@@ -44,39 +47,32 @@ public class MatchService {
                     isFirstLine = false;
                     continue;
                 }
-                String[] headers = line.split(",");
-                Long matchId = Long.parseLong(headers[0]);
-                Long aTeamId = Long.parseLong(headers[1]);
-                Long bTeamId = Long.parseLong(headers[2]);
-                //Date matchDate = ;
-                String score = headers[4].trim();
-                Match match = new Match();
+                String[] info = line.split(",");
+                LocalDate matchDate = parseDate(info[3].trim());
 
-                match.setId(matchId);
-                match.setTeamAId(aTeamId);
-                match.setTeamBId(bTeamId);
-                //match.setDate(matchDate);
-                match.setScore(score);
-
-                matches.add(match);
+                matches.add(new Match(
+                        Long.parseLong(info[0]),
+                        Long.parseLong(info[1]),
+                        Long.parseLong(info[2]),
+                        matchDate,
+                        info[4]
+                ));
+                count++;
             }
         } catch (IOException ie) {
-            throw new InvalidFileFormatException("Error reading file: " + ie.getMessage());
+            throw new InvalidFileFormatException("File can't be uploaded to database, because of corrupted data on line " + count);
         }
 
-        // Save the matches to the repository
-        matches.forEach(System.out::println);
         return matchRepository.saveAll(matches);
     }
-    private boolean isTeamValid(String teams){
-        String[] header = teams.split(",");
-        return header[0].equalsIgnoreCase("id")
-                && header[1].equalsIgnoreCase("name")
-                && header[2].equalsIgnoreCase("ManagerFullName")
-                && header[3].equalsIgnoreCase("group");
+    private LocalDate parseDate(String dateString) throws InvalidFileFormatException {
+        for (DateTimeFormatter formatter : supportedFormats) {
+            try {
+                return LocalDate.parse(dateString, formatter);
+            } catch (DateTimeParseException ignored) {
+            }
+        }
+        throw new InvalidFileFormatException("Unsupported date format: " + dateString);
     }
 
-    private boolean isFileFormatValid(File file){
-        return file.getName().endsWith(".csv");
-    }
 }

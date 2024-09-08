@@ -2,8 +2,6 @@ package com.example.demo.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -14,12 +12,10 @@ public class Record {
     @Id
     @NotNull
     private Long id;
-    @ManyToOne
     @NotNull
-    private Player playerId;
-    @ManyToOne
+    private long playerId;
     @NotNull
-    private Match matchId;
+    private long matchId;
     @NotNull
     @Min(0)
     @Max(89)
@@ -30,7 +26,7 @@ public class Record {
     public Record() {
     }
 
-    public Record(Long id, Player playerId, Match matchId, int fromMin, String toMin) {
+    public Record(Long id, long playerId, long matchId, int fromMin, String toMin) {
         this.id = id;
         this.playerId = playerId;
         this.matchId = matchId;
@@ -38,19 +34,19 @@ public class Record {
         this.toMin = toMin;
     }
 
-    public Player getPlayerId() {
+    public long getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(Player playerId) {
+    public void setPlayerId(long playerId) {
         this.playerId = playerId;
     }
 
-    public Match getMatchId() {
+    public long getMatchId() {
         return matchId;
     }
 
-    public void setMatchId(Match matchId) {
+    public void setMatchId(long matchId) {
         this.matchId = matchId;
     }
 

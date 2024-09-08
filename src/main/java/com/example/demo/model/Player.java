@@ -21,13 +21,13 @@ public class Player {
     @NotNull
     @Pattern(regexp = "^([^\\W\\d_]+-?){1,7}$", message = "Name can't contain special symbols or numbers!")
     private String name;
-    @OneToOne
-    private Team teamId;
+    @NotNull
+    private long teamId;
 
     public Player() {
     }
 
-    public Player(Long id, int teamNumber, String position, String name, Team teamId) {
+    public Player(Long id, int teamNumber, String position, String name, long teamId) {
         this.id = id;
         this.teamNumber = teamNumber;
         this.position = position;
@@ -59,11 +59,11 @@ public class Player {
         this.name = name;
     }
 
-    public Team getTeamId() {
+    public long getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(Team teamId) {
+    public void setTeamId(long teamId) {
         this.teamId = teamId;
     }
 }

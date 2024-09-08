@@ -1,5 +1,6 @@
 package com.example.demo.handler;
 
+import com.example.demo.exception.InvalidDateFormatException;
 import com.example.demo.exception.InvalidFileFormatException;
 import com.example.demo.exception.InvalidFileTypeException;
 import com.example.demo.exception.MissingFileException;
@@ -31,4 +32,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> inaccessibleDatabase(IOException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(InvalidDateFormatException.class)
+    public ResponseEntity<String> wrongDateFormat(InvalidDateFormatException e){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    }
+
 }

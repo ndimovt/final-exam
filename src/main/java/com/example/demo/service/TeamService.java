@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.exception.InvalidFileFormatException;
 import com.example.demo.exception.InvalidFileTypeException;
-import com.example.demo.exception.MissingFileException;
 import com.example.demo.model.Team;
 import com.example.demo.repository.TeamRepository;
 import com.example.demo.validator.Validator;
@@ -15,15 +14,11 @@ import java.util.List;
 
 @Service
 public class TeamService {
-    private final File match = new File("");
-    private final File teams = new File("teams.csv");
-    private final File players = new File("");
-    private final File records = new File("");
-
     @Autowired
     private TeamRepository teamRepository;
 
     public List<Team> readTeamsFile() throws InvalidFileTypeException, InvalidFileFormatException {
+        int count = 0;
         File file = new File("teams.csv");
         List<Team> teams = new ArrayList<>();
         if (!Validator.isFileFormatValid(file)) {
@@ -43,13 +38,12 @@ public class TeamService {
                         headers[1],
                         headers[2],
                         headers[3].charAt(0)));
+                count++;
 
             }
         } catch (IOException ie) {
-            throw new InvalidFileFormatException("Error reading file: " + ie.getMessage());
+            throw new InvalidFileFormatException("File can't be uploaded to database, because of corrupted data on line " + count);
         }
         return teamRepository.saveAll(teams);
     }
-
-
 }

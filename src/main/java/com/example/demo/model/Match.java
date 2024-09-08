@@ -2,30 +2,26 @@ package com.example.demo.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 @Entity
 public class Match {
     @Id
     private Long id;
     @NotNull
-    private Long teamAId;
+    private long teamAId;
     @NotNull
-    private Long teamBId;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date;
+    private long teamBId;
+    @NotNull
+    private LocalDate date;
     @NotNull
     private String score;
 
     public Match() {
     }
 
-    public Match(Long id, Long teamAId, Long teamBId, Date date, String score) {
+    public Match(Long id, Long teamAId, Long teamBId, LocalDate date, String score) {
         this.id = id;
         this.teamAId = teamAId;
         this.teamBId = teamBId;
@@ -57,11 +53,11 @@ public class Match {
         this.teamBId = teamBId;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

@@ -8,15 +8,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-
 @RestController
 public class TeamController {
     @Autowired
     private TeamService teamService;
     @PostMapping("/team/file/")
-    public ResponseEntity<String> insertTeamInfo(){
-        teamService.readTeamsFile();
-        return ResponseEntity.ok("Ok");
+    public ResponseEntity<String> insertTeamInfo(@RequestParam("file") MultipartFile file){
+        try {
+            teamService.readTeamsFile(file);
+            return ResponseEntity.ok("File uploaded and processed successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error processing file!");
+        }
     }
 }

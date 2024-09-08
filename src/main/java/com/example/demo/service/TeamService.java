@@ -7,6 +7,7 @@ import com.example.demo.repository.TeamRepository;
 import com.example.demo.validator.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -17,14 +18,13 @@ public class TeamService {
     @Autowired
     private TeamRepository teamRepository;
 
-    public List<Team> readTeamsFile() throws InvalidFileTypeException, InvalidFileFormatException {
+    public List<Team> readTeamsFile(MultipartFile file) throws InvalidFileTypeException, InvalidFileFormatException {
         int count = 0;
-        File file = new File("teams.csv");
         List<Team> teams = new ArrayList<>();
         if (!Validator.isFileFormatValid(file)) {
             throw new InvalidFileTypeException("File type must be csv!");
         }
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String line;
             boolean isFirstLine = true;
             while ((line = reader.readLine()) != null) {

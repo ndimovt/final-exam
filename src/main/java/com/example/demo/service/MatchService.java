@@ -7,11 +7,9 @@ import com.example.demo.repository.MatchRepository;
 import com.example.demo.validator.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -30,15 +28,14 @@ public class MatchService {
     @Autowired
     private MatchRepository matchRepository;
 
-    public List<Match> readMatchesFile() throws InvalidFileTypeException, InvalidFileFormatException {
+    public List<Match> readMatchesFile(MultipartFile file) throws InvalidFileTypeException, InvalidFileFormatException {
         int count = 0;
-        File file = new File("matches.csv");
         List<Match> matches = new ArrayList<>();
         if (!Validator.isFileFormatValid(file)) {
             throw new InvalidFileTypeException("File type must be csv!");
         }
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String line;
             boolean isFirstLine = true;
 

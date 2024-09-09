@@ -8,6 +8,9 @@ import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Validates different date formats
+ */
 public class DateValidator {
     private static List<DateTimeFormatter> supportedFormats = Arrays.asList(
             DateTimeFormatter.ofPattern("M/d/yyyy"),
@@ -17,6 +20,12 @@ public class DateValidator {
             DateTimeFormatter.ofPattern("d-MM-yyyy"),
             DateTimeFormatter.ofPattern("dd-MM-yyyy"),
             DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+
+    /**
+     * Validates the date format or throws exception
+     * @param dateString Date as String
+     * @return LocalDate or throws exception
+     */
 
     public static LocalDate validateDate(String dateString){
         if(dateString.isBlank() || dateString.isEmpty()){

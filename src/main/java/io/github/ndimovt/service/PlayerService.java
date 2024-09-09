@@ -19,10 +19,22 @@ import static io.github.ndimovt.validators.FileFormatValidator.*;
 import static io.github.ndimovt.validators.NumberAndPlayingTimeValidator.*;
 import static io.github.ndimovt.validators.NameValidator.*;
 
+/**
+ * Processing file, given and writes the information to database
+ */
 @Service
 public class PlayerService {
     @Autowired
     private PlayerRepository playerRepository;
+
+    /**
+     * Returns List of players to be saved in the database
+     * @param file Accepts multipart file
+     * @return List of Team objects
+     * @throws InvalidFileTypeException if file type is not valid
+     * @throws InvalidFileFormatException if there is unsuitable information
+     * @throws ArrayIndexOutOfBoundsException if there is missing column
+     */
 
     public List<Player> insertPlayers(MultipartFile file) throws InvalidFileTypeException, InvalidFileFormatException, ArrayIndexOutOfBoundsException{
         List<Player> players = new ArrayList<>();
@@ -41,7 +53,7 @@ public class PlayerService {
                 players.add(new Player(
                         validateId(records[0]),
                         validateTeamNumber(records[1]),
-                        validatePlayerPosition(records[2]),
+                        validatePlayerRole(records[2]),
                         validatePlayerName(records[3]),
                         validateId(records[4])
                 ));

@@ -17,10 +17,22 @@ import java.util.List;
 import static io.github.ndimovt.validators.FileFormatValidator.*;
 import static io.github.ndimovt.validators.NumberAndPlayingTimeValidator.*;
 
+/**
+ * Processing file, given and writes the information to database
+ */
 @Service
 public class RecordService {
     @Autowired
     private RecordsRepository recordsRepository;
+
+    /**
+     * Returns List of match records to be saved in the database
+     * @param file Accepts multipart file
+     * @return List of Team objects
+     * @throws InvalidFileTypeException if file type is not valid
+     * @throws InvalidFileFormatException if there is unsuitable information
+     * @throws ArrayIndexOutOfBoundsException if there is missing column
+     */
 
     public List<Record> insertRecords(MultipartFile file) throws InvalidFileTypeException, InvalidFileFormatException, ArrayIndexOutOfBoundsException{
         List<Record> records = new ArrayList<>();

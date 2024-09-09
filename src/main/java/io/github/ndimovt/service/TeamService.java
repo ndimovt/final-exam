@@ -16,10 +16,23 @@ import static io.github.ndimovt.validators.FileFormatValidator.*;
 import static io.github.ndimovt.validators.NumberAndPlayingTimeValidator.*;
 import static io.github.ndimovt.validators.NameValidator.*;
 import static io.github.ndimovt.validators.PositionAndGroupValidator.*;
+
+/**
+ * Processing file, given and writes the information to database
+ */
 @Service
 public class TeamService {
     @Autowired
     private TeamRepository teamRepository;
+
+    /**
+     * Returns List of teams to be saved in the database
+     * @param file Accepts multipart file
+     * @return List of Team objects
+     * @throws InvalidFileTypeException if file type is not valid
+     * @throws InvalidFileFormatException if there is unsuitable information
+     * @throws ArrayIndexOutOfBoundsException if there is missing column
+     */
 
     public List<Team> readTeamsFile(MultipartFile file) throws InvalidFileTypeException, InvalidFileFormatException, ArrayIndexOutOfBoundsException {
         List<Team> teams = new ArrayList<>();

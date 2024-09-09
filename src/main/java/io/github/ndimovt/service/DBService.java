@@ -6,6 +6,10 @@ import org.springframework.stereotype.Service;
 import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
+
+/**
+ * Processing final result required by the app conditions
+ */
 @Service
 public class DBService {
     private static final String STATEMENT = """
@@ -14,6 +18,11 @@ public class DBService {
                     JOIN player p ON r.player_id = p.id
                     JOIN team t ON p.team_id = t.id;
                     """;
+
+    /**
+     * Gets the two longest participation players from different teams
+     * @return List of LongestPlayingPairDto objects
+     */
     public List<LongestPlayingPairDto> longestPlayingPlayers(){
         List<LongestPlayingPairDto> players = new ArrayList<>();
         LinkedHashMap<Integer, LongestPlayingPairDto> listOfRecords = sortedResult();

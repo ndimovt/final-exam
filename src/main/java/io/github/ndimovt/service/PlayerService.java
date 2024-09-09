@@ -4,7 +4,6 @@ import io.github.ndimovt.exception.InvalidFileFormatException;
 import io.github.ndimovt.exception.InvalidFileTypeException;
 import io.github.ndimovt.model.Player;
 import io.github.ndimovt.repository.PlayerRepository;
-import io.github.ndimovt.validators.PositionAndGroupValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

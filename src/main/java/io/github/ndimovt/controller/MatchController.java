@@ -16,6 +16,5 @@ public class MatchController {
     public ResponseEntity<String> insertMatchRecords(@RequestParam("file") MultipartFile file){
         matchService.readMatchesFile(file);
         return ResponseEntity.ok("File processed successfully!");
-
     }
 }

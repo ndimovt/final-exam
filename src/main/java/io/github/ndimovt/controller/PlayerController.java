@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class PlayerController {
     @Autowired
     private PlayerService playerService;
-    @PostMapping("/player/file/")
+    @PostMapping("/player/createWithFile")
     public ResponseEntity<String> insertPlayerInfo(@RequestParam("file") MultipartFile file){
         playerService.insertPlayers(file);
         return ResponseEntity.ok("File uploaded and processed successfully");

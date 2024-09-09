@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class RecordController {
     @Autowired
     private RecordService recordService;
-    @PostMapping("/record/file/")
+    @PostMapping("/record/createWithFile")
     public ResponseEntity<String> insertRecordsInfo(@RequestParam("file") MultipartFile file){
         recordService.insertRecords(file);
         return ResponseEntity.ok("File uploaded and processed successfully");

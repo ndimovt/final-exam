@@ -12,10 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class TeamController {
     @Autowired
     private TeamService teamService;
-    @PostMapping("/team/file/")
+    @PostMapping("/team/createWithFile")
     public ResponseEntity<String> insertTeamInfo(@RequestParam("file") MultipartFile file){
         teamService.readTeamsFile(file);
         return ResponseEntity.ok("File uploaded and processed successfully");
-
     }
 }

@@ -1,11 +1,12 @@
 package io.github.ndimovt.service;
 
 import io.github.ndimovt.model.dto.LongestPlayingPairDto;
+import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
-
+@Service
 public class DBService {
     private static final String STATEMENT = """
                     SELECT p.name, p.id, r.from_min, r.to_min, t.team_name
@@ -13,7 +14,38 @@ public class DBService {
                     JOIN player p ON r.player_id = p.id
                     JOIN team t ON p.team_id = t.id;
                     """;
-    public Map<Integer, LongestPlayingPairDto> unsortedResult(){
+    public List<LongestPlayingPairDto> longestPlayingPlayers(){
+        List<LongestPlayingPairDto> players = new ArrayList<>();
+        LinkedHashMap<Integer, LongestPlayingPairDto> listOfRecords = sortedResult();
+        LongestPlayingPairDto firstPlayer = null;
+        LongestPlayingPairDto secondPlayer = null;
+
+        for(Map.Entry<Integer, LongestPlayingPairDto> entry : listOfRecords.entrySet()){
+            LongestPlayingPairDto currentPlayer = entry.getValue();
+            if(firstPlayer == null){
+                firstPlayer = currentPlayer;
+                players.add(firstPlayer);
+            } else if (!currentPlayer.getTeamName().equals(firstPlayer.getTeamName())) {
+                secondPlayer = currentPlayer;
+                players.add(secondPlayer);
+                break;
+            }
+        }
+        return players;
+    }
+    private LinkedHashMap<Integer, LongestPlayingPairDto> sortedResult(){
+        return unsortedResult().entrySet()
+                .stream()
+                .sorted((entry1, entry2) -> Integer.compare(entry2.getValue().getTotalPlayTime(), entry1.getValue().getTotalPlayTime()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue,
+                        LinkedHashMap::new
+                ));
+    }
+
+    private Map<Integer, LongestPlayingPairDto> unsortedResult(){
         Map<Integer, LongestPlayingPairDto> list = new TreeMap<>();
         try(Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/football_statistics", "postgres", "pass")){
             ResultSet rs = null;
@@ -45,17 +77,7 @@ public class DBService {
         }
         return list;
     }
-    public LinkedHashMap<Integer, LongestPlayingPairDto> sortedResult(Map<Integer, LongestPlayingPairDto> toSort){
-        return toSort.entrySet()
-                .stream()
-                .sorted((entry1, entry2) -> Integer.compare(entry2.getValue().getTotalPlayTime(), entry1.getValue().getTotalPlayTime()))
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue,
-                        LinkedHashMap::new
-                ));
-    }
+
     private void closeConnection(ResultSet set, PreparedStatement statement) throws SQLException{
         if(set != null){
             set.close();

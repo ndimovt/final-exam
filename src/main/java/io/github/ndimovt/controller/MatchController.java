@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class MatchController {
     @Autowired
     private MatchService matchService;
-    @PostMapping("/match/file/")
+    @PostMapping("/match/createWithFile")
     public ResponseEntity<String> insertMatchRecords(@RequestParam("file") MultipartFile file){
         matchService.readMatchesFile(file);
         return ResponseEntity.ok("File processed successfully!");

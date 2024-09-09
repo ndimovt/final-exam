@@ -4,7 +4,7 @@ import io.github.ndimovt.exception.InvalidFileFormatException;
 import io.github.ndimovt.exception.InvalidFileTypeException;
 import io.github.ndimovt.model.Record;
 import io.github.ndimovt.repository.RecordsRepository;
-import io.github.ndimovt.validator.Validator;
+import io.github.ndimovt.validators.PositionAndGroupValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +15,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.github.ndimovt.validator.Validator.*;
+import static io.github.ndimovt.validators.FileFormatValidator.*;
+import static io.github.ndimovt.validators.NumberAndPlayingTimeValidator.*;
+
 @Service
 public class RecordService {
     @Autowired
@@ -23,7 +25,7 @@ public class RecordService {
 
     public List<Record> insertRecords(MultipartFile file) throws InvalidFileTypeException, InvalidFileFormatException, ArrayIndexOutOfBoundsException{
         List<Record> records = new ArrayList<>();
-        if (!Validator.isFileFormatValid(file)) {
+        if (!isFileFormatValid(file)) {
             throw new InvalidFileTypeException("File type must be csv!");
         }
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {

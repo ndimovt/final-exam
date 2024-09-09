@@ -4,7 +4,7 @@ import io.github.ndimovt.exception.InvalidFileFormatException;
 import io.github.ndimovt.exception.InvalidFileTypeException;
 import io.github.ndimovt.model.Player;
 import io.github.ndimovt.repository.PlayerRepository;
-import io.github.ndimovt.validator.Validator;
+import io.github.ndimovt.validators.PositionAndGroupValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +15,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.github.ndimovt.validator.Validator.*;
+import static io.github.ndimovt.validators.PositionAndGroupValidator.*;
+import static io.github.ndimovt.validators.FileFormatValidator.*;
+import static io.github.ndimovt.validators.NumberAndPlayingTimeValidator.*;
+import static io.github.ndimovt.validators.NameValidator.*;
 
 @Service
 public class PlayerService {
@@ -24,7 +27,7 @@ public class PlayerService {
 
     public List<Player> insertPlayers(MultipartFile file) throws InvalidFileTypeException, InvalidFileFormatException, ArrayIndexOutOfBoundsException{
         List<Player> players = new ArrayList<>();
-        if (!Validator.isFileFormatValid(file)) {
+        if (!isFileFormatValid(file)) {
             throw new InvalidFileTypeException("File type must be csv!");
         }
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
@@ -40,7 +43,7 @@ public class PlayerService {
                         validateId(records[0]),
                         validateTeamNumber(records[1]),
                         validatePlayerPosition(records[2]),
-                        Validator.validatePlayerName(records[3]),
+                        validatePlayerName(records[3]),
                         validateId(records[4])
                 ));
             }

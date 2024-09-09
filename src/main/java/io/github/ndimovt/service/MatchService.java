@@ -4,7 +4,6 @@ import io.github.ndimovt.exception.InvalidFileFormatException;
 import io.github.ndimovt.exception.InvalidFileTypeException;
 import io.github.ndimovt.model.Match;
 import io.github.ndimovt.repository.MatchRepository;
-import io.github.ndimovt.validator.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,7 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.util.*;
 
-import static io.github.ndimovt.validator.Validator.*;
+import static io.github.ndimovt.validators.DateValidator.*;
+import static io.github.ndimovt.validators.FileFormatValidator.*;
+import static io.github.ndimovt.validators.NumberAndPlayingTimeValidator.*;
 
 @Service
 public class MatchService {
@@ -22,7 +23,7 @@ public class MatchService {
 
     public List<Match> readMatchesFile(MultipartFile file) throws InvalidFileTypeException, InvalidFileFormatException, ArrayIndexOutOfBoundsException {
         List<Match> matches = new ArrayList<>();
-        if (!Validator.isFileFormatValid(file)) {
+        if (!isFileFormatValid(file)) {
             throw new InvalidFileTypeException("File type must be csv!");
         }
 

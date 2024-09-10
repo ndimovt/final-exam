@@ -8,10 +8,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * The class RecordController
+ */
 @RestController
 public class RecordController {
     @Autowired
     private RecordService recordService;
+
+    /**
+     * Reads file content
+     * @param file MultipartFile
+     * @return ResponseEntity
+     */
     @PostMapping("/record/createWithFile")
     public ResponseEntity<String> insertRecordsInfo(@RequestParam("file") MultipartFile file){
         recordService.insertRecords(file);

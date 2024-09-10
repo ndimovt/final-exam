@@ -9,10 +9,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
+/**
+ * The class DBResultController
+ */
 @Controller
 public class DBResultController {
     @Autowired
     private DBService service;
+
+    /**
+     * Return result
+     * @return ResponseEntity
+     */
     @GetMapping("/result")
     public ResponseEntity<List<LongestPlayingPairDto>> showResult(){
         List<LongestPlayingPairDto> result = service.longestPlayingPlayers();

@@ -7,6 +7,9 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 
+/**
+ * The class DataSourceConfiguration
+ */
 @Configuration
 public class DataSourceConfiguration {
     @Value("${spring.datasource.url}")
@@ -17,6 +20,11 @@ public class DataSourceConfiguration {
     private String pass;
     @Value("${spring.datasource.driver-class-name}")
     private String driverClassName;
+
+    /**
+     * Returns DriverManagerDataSource instance with the given parameters
+     * @return DriverManagerDataSource object
+     */
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource source = new DriverManagerDataSource();

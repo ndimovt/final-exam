@@ -13,7 +13,7 @@ public class NameValidator {
      * @return String object or throws exception
      */
     public static String validateTeamName(String teamName) {
-        String pattern = "[a-zA-Z ]+$";
+        String pattern = "[a-zA-Z ]+${4,}";
         if (isInputValid(pattern, teamName) && !teamName.isEmpty() && !teamName.isBlank()) {
             return teamName;
         }

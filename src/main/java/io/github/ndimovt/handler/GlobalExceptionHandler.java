@@ -96,6 +96,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ArrayIndexOutOfBoundsException.class)
     public ResponseEntity<String> invalidLength(ArrayIndexOutOfBoundsException e){
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        return new ResponseEntity<>("File is empty or have empty rows!", HttpStatus.CONFLICT);
     }
 }

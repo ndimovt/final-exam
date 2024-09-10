@@ -1,6 +1,8 @@
 package io.github.ndimovt.service;
 
+import io.github.ndimovt.configuration.DataSourceConfiguration;
 import io.github.ndimovt.model.dto.LongestPlayingPairDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
@@ -12,6 +14,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class DBService {
+    @Autowired
+    private DataSourceConfiguration configuration;
     private static final String STATEMENT = """
                     SELECT p.name, p.id, r.from_min, r.to_min, t.team_name
                     FROM record r
@@ -56,7 +60,7 @@ public class DBService {
 
     private Map<Integer, LongestPlayingPairDto> unsortedResult(){
         Map<Integer, LongestPlayingPairDto> list = new TreeMap<>();
-        try(Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/football_statistics", "postgres", "pass")){
+        try(Connection con = configuration.dataSource().getConnection()){
             ResultSet rs = null;
             PreparedStatement ps = con.prepareStatement(STATEMENT);
             rs = ps.executeQuery();

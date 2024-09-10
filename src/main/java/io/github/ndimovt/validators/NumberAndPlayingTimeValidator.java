@@ -55,7 +55,7 @@ public class NumberAndPlayingTimeValidator {
      * @return String object or throws exception
      */
     public static String validateMaxPlayingTime(String time){
-        String pattern = "^(NULL|[1-9]$|[1-8][0-9]$|90)$";
+        String pattern = "^(NULL|[1-9]$|[1-9][0-9]$|1[0-1][0-9]$|120)$";
         if(isInputValid(pattern, time) && !time.isEmpty() && !time.isBlank()){
             return time;
         }

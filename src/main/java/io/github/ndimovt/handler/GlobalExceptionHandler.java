@@ -48,5 +48,4 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> invalidLength(ArrayIndexOutOfBoundsException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
-
 }

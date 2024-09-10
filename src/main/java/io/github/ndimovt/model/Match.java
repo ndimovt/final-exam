@@ -1,10 +1,6 @@
 package io.github.ndimovt.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 @Entity
@@ -12,20 +8,28 @@ public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private long teamAId;
-    private long teamBId;
     private LocalDate date;
     private String score;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "teamaid", referencedColumnName = "id")
+    private Team teamAId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "teambid", referencedColumnName = "id")
+    private Team teamBId;
 
     public Match() {
     }
 
-    public Match(Long id, Long teamAId, Long teamBId, LocalDate date, String score) {
+    public Match(Long id, LocalDate date, String score, Team teamAId, Team teamBId) {
         this.id = id;
-        this.teamAId = teamAId;
-        this.teamBId = teamBId;
         this.date = date;
         this.score = score;
+        this.teamAId = teamAId;
+        this.teamBId = teamBId;
+    }
+
+    public Match(Long id) {
+        this.id = id;
     }
 
     public Long getId() {
@@ -34,22 +38,6 @@ public class Match {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getTeamAId() {
-        return teamAId;
-    }
-
-    public void setTeamAId(Long teamAId) {
-        this.teamAId = teamAId;
-    }
-
-    public Long getTeamBId() {
-        return teamBId;
-    }
-
-    public void setTeamBId(Long teamBId) {
-        this.teamBId = teamBId;
     }
 
     public LocalDate getDate() {
@@ -66,5 +54,21 @@ public class Match {
 
     public void setScore(String score) {
         this.score = score;
+    }
+
+    public Team getTeamAId() {
+        return teamAId;
+    }
+
+    public void setTeamAId(Team teamAId) {
+        this.teamAId = teamAId;
+    }
+
+    public Team getTeamBId() {
+        return teamBId;
+    }
+
+    public void setTeamBId(Team teamBId) {
+        this.teamBId = teamBId;
     }
 }

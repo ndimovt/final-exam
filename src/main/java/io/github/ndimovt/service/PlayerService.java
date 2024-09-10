@@ -3,6 +3,7 @@ package io.github.ndimovt.service;
 import io.github.ndimovt.exception.InvalidFileFormatException;
 import io.github.ndimovt.exception.InvalidFileTypeException;
 import io.github.ndimovt.model.Player;
+import io.github.ndimovt.model.Team;
 import io.github.ndimovt.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,7 +56,7 @@ public class PlayerService {
                         validateTeamNumber(records[1]),
                         validatePlayerRole(records[2]),
                         validatePlayerName(records[3]),
-                        validateId(records[4])
+                        new Team(validateId(records[4]))
                 ));
             }
         } catch (IOException ie) {

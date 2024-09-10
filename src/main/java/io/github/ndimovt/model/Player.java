@@ -1,9 +1,6 @@
 package io.github.ndimovt.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Player {
@@ -13,17 +10,31 @@ public class Player {
     private int teamNumber;
     private String position;
     private String name;
-    private long teamId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
+    private Team teamId;
 
     public Player() {
     }
 
-    public Player(Long id, int teamNumber, String position, String name, long teamId) {
+    public Player(Long id, int teamNumber, String position, String name, Team teamId) {
         this.id = id;
         this.teamNumber = teamNumber;
         this.position = position;
         this.name = name;
         this.teamId = teamId;
+    }
+
+    public Player(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getTeamNumber() {
@@ -50,11 +61,11 @@ public class Player {
         this.name = name;
     }
 
-    public long getTeamId() {
+    public Team getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(long teamId) {
+    public void setTeamId(Team teamId) {
         this.teamId = teamId;
     }
 }

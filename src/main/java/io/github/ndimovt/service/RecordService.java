@@ -2,6 +2,8 @@ package io.github.ndimovt.service;
 
 import io.github.ndimovt.exception.InvalidFileFormatException;
 import io.github.ndimovt.exception.InvalidFileTypeException;
+import io.github.ndimovt.model.Match;
+import io.github.ndimovt.model.Player;
 import io.github.ndimovt.model.Record;
 import io.github.ndimovt.repository.RecordsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +52,8 @@ public class RecordService {
                 String[] info = line.split(",");
                 records.add(new Record(
                         validateId(info[0]),
-                        validateId(info[1]),
-                        validateId(info[2]),
+                        new Player(validateId(info[1])),
+                        new Match(validateId(info[2])),
                         validatePlayingTime(info[3]),
                         validateMaxPlayingTime(info[4])
                 ));

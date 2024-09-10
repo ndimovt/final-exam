@@ -1,23 +1,25 @@
 package io.github.ndimovt.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 @Entity
 public class Record {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private long playerId;
-    private long matchId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "player_id", referencedColumnName = "id")
+    private Player playerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "match_id", referencedColumnName = "id")
+    private Match matchId;
     private int fromMin;
     private String toMin;
 
     public Record() {
     }
 
-    public Record(Long id, long playerId, long matchId, int fromMin, String toMin) {
+    public Record(Long id, Player playerId, Match matchId, int fromMin, String toMin) {
         this.id = id;
         this.playerId = playerId;
         this.matchId = matchId;
@@ -25,19 +27,27 @@ public class Record {
         this.toMin = toMin;
     }
 
-    public long getPlayerId() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Player getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(long playerId) {
+    public void setPlayerId(Player playerId) {
         this.playerId = playerId;
     }
 
-    public long getMatchId() {
+    public Match getMatchId() {
         return matchId;
     }
 
-    public void setMatchId(long matchId) {
+    public void setMatchId(Match matchId) {
         this.matchId = matchId;
     }
 
